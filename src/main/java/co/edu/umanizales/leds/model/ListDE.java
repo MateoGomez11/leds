@@ -75,5 +75,49 @@ public class ListDE {
         }
     }
 
+    public void middleLed() throws InterruptedException {
+        NodeDE temp = head;
+        if (head != null) {
+            int cont = 0;
+            int middle = size / 2;
+            while (cont < middle) {
+                temp = temp.getNext();
+                cont++;
+            }
+            if (size % 2 != 0) {
+                temp.getData().setDateOn(LocalTime.now());
+                temp.getData().setState(true);
+                Thread.sleep(1000);
+                temp.getData().setDateOff(LocalTime.now());
+                temp.getData().setState(false);
+                if (temp.getNext() != null && temp.getPrevious() != null) {
+                    NodeDE previousNode = temp.getPrevious();
+                    NodeDE nextNode = temp.getNext();
+                    startAndStopTime(previousNode, nextNode);
+                }
+            } else{
+                NodeDE previousNode = temp.getPrevious();
+                NodeDE nextNode = temp;
+                startAndStopTime(previousNode, nextNode);
+            }
+        }
+    }
+
+    private void startAndStopTime(NodeDE previousNode, NodeDE nextNode) throws InterruptedException {
+        while (previousNode != null && nextNode != null) {
+            previousNode.getData().setDateOn(LocalTime.now());
+            nextNode.getData().setDateOn(LocalTime.now());
+            previousNode.getData().setState(true);
+            nextNode.getData().setState(true);
+            Thread.sleep(1000);
+            previousNode.getData().setDateOff(LocalTime.now());
+            nextNode.getData().setDateOff(LocalTime.now());
+            previousNode.getData().setState(false);
+            nextNode.getData().setState(false);
+            previousNode = previousNode.getPrevious();
+            nextNode = nextNode.getNext();
+        }
+    }
+
 
 }

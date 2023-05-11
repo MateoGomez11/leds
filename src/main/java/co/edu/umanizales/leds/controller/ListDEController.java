@@ -39,6 +39,11 @@ public class ListDEController {
         listDEService.getLeds().resetLeds();
         return new ResponseEntity<>(new ResponseDTO(200, "Los leds han sido reiniciado", null), HttpStatus.OK);
     }
+    @GetMapping(path = "/middleled")
+    public ResponseEntity<ResponseDTO> middleLed() throws InterruptedException {
+        listDEService.getLeds().middleLed();
+        return new ResponseEntity<>(new ResponseDTO(200, "Los leds se han prendido y apagado", null), HttpStatus.OK);
+    }
 
 
 
