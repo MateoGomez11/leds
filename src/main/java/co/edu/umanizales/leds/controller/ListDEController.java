@@ -20,6 +20,7 @@ public class ListDEController {
     public ResponseEntity<ResponseDTO> getLeds() {
         return new ResponseEntity<>(new ResponseDTO(200, listDEService.getLeds().getLeds(), null), HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<ResponseDTO> addLed(@RequestBody LedDTO ledDTO) {
         Led newLed = new Led(ledDTO.getId(), false, null, null);
@@ -27,6 +28,7 @@ public class ListDEController {
 
         return new ResponseEntity<>(new ResponseDTO(200, "El led ha sido agregado", null), HttpStatus.OK);
     }
+
     @PostMapping(path = "/addtostart")
     public ResponseEntity<ResponseDTO> addToStartLed(@RequestBody LedDTO ledDTO) {
         Led newLed = new Led(ledDTO.getId(), false, null, null);
@@ -39,15 +41,16 @@ public class ListDEController {
         listDEService.getLeds().resetLeds();
         return new ResponseEntity<>(new ResponseDTO(200, "Los leds han sido reiniciado", null), HttpStatus.OK);
     }
+
     @GetMapping(path = "/middleled")
     public ResponseEntity<ResponseDTO> middleLed() throws InterruptedException {
-        listDEService.getLeds().middleLed();
+        try {
+            listDEService.getLeds().middleLed();
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new ResponseDTO(409, e.getMessage(), null), HttpStatus.OK);
+        }
         return new ResponseEntity<>(new ResponseDTO(200, "Los leds se han prendido y apagado", null), HttpStatus.OK);
     }
-
-
-
-
 
 
 }

@@ -85,16 +85,21 @@ public class ListDE {
                 cont++;
             }
             if (size % 2 != 0) {
-                temp.getData().setDateOn(LocalTime.now());
-                temp.getData().setState(true);
-                Thread.sleep(1000);
-                temp.getData().setDateOff(LocalTime.now());
-                temp.getData().setState(false);
-                if (temp.getNext() != null && temp.getPrevious() != null) {
-                    NodeDE previousNode = temp.getPrevious();
-                    NodeDE nextNode = temp.getNext();
-                    startAndStopTime(previousNode, nextNode);
+                if(head.getNext()!=null){
+                    temp.getData().setDateOn(LocalTime.now());
+                    temp.getData().setState(true);
+                    Thread.sleep(1000);
+                    temp.getData().setDateOff(LocalTime.now());
+                    temp.getData().setState(false);
+                    if (temp.getNext() != null && temp.getPrevious() != null) {
+                        NodeDE previousNode = temp.getPrevious();
+                        NodeDE nextNode = temp.getNext();
+                        startAndStopTime(previousNode, nextNode);
+                    }
+                }else{
+                    throw new RuntimeException("El método solo se puede ejecutar cuando haya más de un dato.");
                 }
+
             } else{
                 NodeDE previousNode = temp.getPrevious();
                 NodeDE nextNode = temp;
@@ -104,7 +109,7 @@ public class ListDE {
     }
 
     private void startAndStopTime(NodeDE previousNode, NodeDE nextNode) throws InterruptedException {
-        while (previousNode != null && nextNode != null) {
+        while (previousNode.getPrevious() != null && nextNode.getNext() != null) {
             previousNode.getData().setDateOn(LocalTime.now());
             nextNode.getData().setDateOn(LocalTime.now());
             previousNode.getData().setState(true);
@@ -117,6 +122,10 @@ public class ListDE {
             previousNode = previousNode.getPrevious();
             nextNode = nextNode.getNext();
         }
+        previousNode.getData().setState(true);
+        previousNode.getData().setDateOn(LocalTime.now());
+        nextNode.getData().setState(true);
+        nextNode.getData().setDateOn(LocalTime.now());
     }
 
 
